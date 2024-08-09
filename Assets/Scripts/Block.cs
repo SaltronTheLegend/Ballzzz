@@ -7,8 +7,7 @@ using UnityEngine;
 
 public class Block : MonoBehaviour
 {
-    [SerializeField]
-    private int hitsRemaining = 10;
+    private int hitsRemaining;
 
     private SpriteRenderer spriteRenderer;
     private TextMeshPro text;
@@ -33,5 +32,11 @@ public class Block : MonoBehaviour
             UpdateVisualState();
         else
             Destroy(gameObject);
+    }
+
+    internal void SetHits(int hits)
+    {
+        hitsRemaining = hits;
+        UpdateVisualState();
     }
 }

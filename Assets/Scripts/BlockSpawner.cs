@@ -8,16 +8,49 @@ public class BlockSpawner : MonoBehaviour
     [SerializeField]
     private Block blockPrefab;
 
+    private int playWidth = 8;
+    private float distanceBetweenBlocks = 0.7f;
+    private int rowsSpawned;
+
+    private List<Block> blocksSpawned = new List<Block>();
+
     private void OnEnable()
     {
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < 1; i++)
         {
             SpawnRowOfBlocks();
         }
     }
 
-    private void SpawnRowOfBlocks()
+    public void SpawnRowOfBlocks()
     {
-        
+        foreach (var block in blocksSpawned)
+        {
+            if (block != null)
+            {
+                block.transform.position += Vector3.down * distanceBetweenBlocks;
+            }
+        }
+
+        for (int i = 0; i < playWidth; i++)
+        {
+            if (UnityEngine.Random.Range(0, 100) <= 30)
+            {
+                var block = Instantiate(blockPrefab, GetPosition(i), Quaternion.identity);
+                int hits = UnityEngine.Random.Range(1, 3) + rowsSpawned;
+
+                block.SetHits(hits);
+
+                blocksSpawned.Add(block);
+            }
+        }
+        rowsSpawned++;
+    }
+
+    private Vector3 GetPosition(int i)
+    {
+        Vector3 position = transform.position;
+        position += Vector3.right * i * distanceBetweenBlocks;
+        return position;
     }
 }
